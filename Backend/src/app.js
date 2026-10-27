@@ -2,18 +2,23 @@ const express = require("express");
 
 const app = express();
 
-// Request handler for /test route
-app.use("/test", (req, res) => {
-    console.log("Test request received");
-    res.send("Hello from the test route");
-});
 
+app.use("/", (req, res, next) => {
+    const token = "Admin"
+    const isAuthenticated = (token === "Admin")
+    if (isAuthenticated) {
+        console.log("app.use middleware is called")
+        next();
+    }
+    else {
+        res.status(401).send("Not Authenticated")
+    }
+})
 
-// Request handler for all request
-app.use((req, res) => {
-    console.log("Request received");
-    res.send("Hello from the server");
-});
+app.post("/user", (req, res) => {
+    res.status(200).send("Data Saved")
+    console.log("Data Saved")
+})
 
 
 const PORT = 3000;
