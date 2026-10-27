@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 
-app.use("/", (req, res, next) => {
+app.use("/user", (req, res, next) => {
     const token = "Admin"
     const isAuthenticated = (token === "Admin")
     // Sending back the request if unauthorised from the middleware
@@ -16,7 +16,7 @@ app.use("/", (req, res, next) => {
     }
 })
 
-app.post("/user", (req, res) => {
+app.post("/user/add", (req, res) => {
     res.status(200).send("Data Saved")
     console.log("Data Saved")
 })
