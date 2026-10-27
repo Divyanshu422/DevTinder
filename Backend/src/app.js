@@ -6,13 +6,11 @@ const app = express();
 app.use("/", (req, res, next) => {
     const token = "Admin"
     const isAuthenticated = (token === "Admin")
-    if (isAuthenticated) {
-        console.log("app.use middleware is called")
-        next();
-    }
-    else {
+    // Sending back the request if unauthorised from the middleware
+    if (!isAuthenticated) {
         res.status(401).send("Not Authenticated")
     }
+    next();
 })
 
 app.post("/user", (req, res) => {
