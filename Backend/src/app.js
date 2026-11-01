@@ -53,6 +53,18 @@ app.get("/user/:userId", async (req, res) => {
     }
 });
 
+// DELETE /user - Delete a user from the database by _id
+app.delete("/user", async (req, res) => {
+    const userId = req.body.userId;
+    try {
+        // Both `findByIdAndDelete(userId)` and `findByIdAndDelete({ _id: userId })` work!
+        // Under the hood, it executes `findOneAndDelete({ _id: userId })`
+        const user = await User.findByIdAndDelete(userId);
+        res.send("User deleted successfully");
+    } catch (err) {
+        res.status(400).send("Something went wrong ");
+    }
+});
 
 
 const PORT = 3000;
