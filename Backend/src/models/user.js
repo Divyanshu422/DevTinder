@@ -1,10 +1,14 @@
 const { mongoose } = require("mongoose")
 
 const userSchema = new mongoose.Schema({
-    firstName: String,
+    firstName: {
+        type: String,
+        required: true
+    },
     lastName: String,
     emailId: {
         type: String,
+        required: true
     },
     password: String,
     age: {
@@ -15,6 +19,17 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
+    },
+    about: {
+        type: String,
+        default: "Default description of user"
+    },
+    photoUrl: {
+        type: String,
+        default: "https://hancockogundiyapartners.com/management/dummy-profile-pic-300x300/"
+    },
+    skills: {
+        type: [String]
     }
 })
 
