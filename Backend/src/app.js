@@ -17,7 +17,7 @@ app.post("/signup", async (req, res) => {
         res.json({ success: true, message: "User created successfully" });
     } catch (error) {
         console.log("Error creating user:", error);
-        res.json({ success: false, message: "Error creating user" });
+        res.json({ success: false, message: error.message });
     }
 
 })
