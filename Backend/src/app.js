@@ -54,11 +54,18 @@ app.get("/user/:userId", async (req, res) => {
 });
 
 // PATCH /user - Update a user's data by userId
-app.patch("/user", async (req, res) => {
-    const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+    const userId = req.params.userId;
     const data = req.body;
 
     try {
+        const ALLOWED_FIELDS = ["photoUrl", "about", "gender", "skills"]
+
+        const isUpdateAllowed = Object.keys(data).every((field) => ALLOWED_FIELDS.includes(field));
+
+        if (!isUpdateAllowed) {
+            return res.status(400).send("Invalid fields");
+        }
         const user = await User.findByIdAndUpdate(userId, data, {
             returnDocument: "after", // Returns the updated document instead of the old one
             runValidators: true, // <-- Forces Mongoose to run schema validations on update!
