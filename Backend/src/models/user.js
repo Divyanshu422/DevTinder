@@ -61,6 +61,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default:
       "https://hancockogundiyapartners.com/management/dummy-profile-pic-300x300/",
+    validate(value) {
+      if (!validator.isURL(value)) {
+        throw new Error("Not a valid url")
+      }
+    }
   },
   skills: {
     type: [String],
