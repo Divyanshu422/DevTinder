@@ -2,6 +2,7 @@ const express = require("express");
 const { connectDatabase } = require("./config/database");
 const app = express();
 const { User } = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
 
 // Middleware to parse the incoming request data from JSON format to java script object. 
 app.use(express.json());
@@ -9,6 +10,7 @@ app.use(express.json());
 // POST /signup - Adds a new user document to the 'users' collection
 app.post("/signup", async (req, res) => {
     try {
+        validateSignUpData(req);
         const userInfo = req.body;
         // Store user in database
         const newUser = new User(userInfo);
