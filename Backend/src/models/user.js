@@ -29,6 +29,13 @@ const userSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
+    validate: (value) => {
+      const gender = value.toLowerCase();
+      if (gender !== "male" || gender !== "female" || gender !== "others") {
+        throw new Error("Invalid gender value");
+      }
+      return true;
+    },
   },
   role: {
     type: String,
