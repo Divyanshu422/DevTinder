@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: (value) => {
       const gender = value.toLowerCase();
-      if (gender !== "male" || gender !== "female" || gender !== "others") {
+      if (!["male", "female", "others"].includes(gender)) {
         throw new Error("Invalid gender value");
       }
       return true;
@@ -52,6 +52,8 @@ const userSchema = new mongoose.Schema({
   skills: {
     type: [String],
   },
+}, {
+  timeStamps: true
 });
 
 // Pascal case for class/model name - User
