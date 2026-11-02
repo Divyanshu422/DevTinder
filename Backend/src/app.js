@@ -61,6 +61,7 @@ app.patch("/user", async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(userId, data, {
             returnDocument: "after", // Returns the updated document instead of the old one
+            runValidators: true, // <-- Forces Mongoose to run schema validations on update!
         });
         console.log(user);
         res.send("User updated successfully");
