@@ -52,9 +52,7 @@ const userSchema = new mongoose.Schema({
   skills: {
     type: [String],
   },
-}, {
-  timeStamps: true
-});
+}, { timestamps: true });
 
 // Pascal case for class/model name - User
 const User = mongoose.model("User", userSchema);
