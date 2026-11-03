@@ -65,7 +65,8 @@ app.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (isPasswordValid) {
-            // Next Episode Preview: Create JWT token & attach it to an HTTP cookie here!
+            // Sending the dummy cookie-token
+            res.cookie("token", "Dummy_cookie_send_to_frontend")
             res.send("Login Successful!!!");
         } else {
             throw new Error("Invalid credentials");
@@ -74,6 +75,17 @@ app.post("/login", async (req, res) => {
         res.status(400).send("ERROR : " + err.message);
     }
 });
+
+
+app.get("/profile", (req, res) => {
+    // Reading cookie
+    try {
+        console.log("Reading Cookie", req.cookies);
+        res.send("Profile Api called")
+    } catch (error) {
+        res.status(400).send("ERROR : " + error.message);
+    }
+})
 
 const PORT = 3000;
 
