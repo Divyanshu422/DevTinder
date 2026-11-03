@@ -11,3 +11,6 @@
 # utils:
     - Contains the pure helper function. Hence only req objects parameter is passed in function becoz we are not sending back the response in these helper function
     - it is a common directory in software projects used to store small, reusable, and self-contained helper functions that perform common tasks across different parts of an application 
+
+
+# Lecture 9: Small authentication done
