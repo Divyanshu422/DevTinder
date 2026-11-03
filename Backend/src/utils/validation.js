@@ -4,10 +4,10 @@ const validator = require("validator")
 const validateSignUpData = (req) => {
 
     // Destructuring the req.body
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, emailId, password } = req.body;
 
     // 1. Basic existence check
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !emailId || !password) {
         throw new Error("All field are required")
     }
 
