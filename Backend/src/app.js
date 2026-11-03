@@ -32,6 +32,38 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// =========================================================================
+// 2. POST /login - Authenticate User with Email & bcrypt.compare()
+// =========================================================================
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+
+    // Optional Homework Check: Validate email format before querying DB
+    if (!validator.isEmail(emailId)) {
+      throw new Error("Invalid credentials");
+    }
+
+    // Step 1: Check if a user with this emailId exists in the database
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
+      // Generic error message to prevent Information Leaking
+      throw new Error("Invalid credentials");
+    }
+
+    // Step 2: Compare plain password from req.body with hashed password in DB
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (isPasswordValid) {
+      // Next Episode Preview: Create JWT token & attach it to an HTTP cookie here!
+      res.send("Login Successful!!!");
+    } else {
+      throw new Error("Invalid credentials");
+    }
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
+});
 
 const PORT = 3000;
 
