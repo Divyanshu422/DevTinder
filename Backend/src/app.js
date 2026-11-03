@@ -1,10 +1,11 @@
 const express = require("express");
 const { connectDatabase } = require("./config/database");
-const { bcrypt } = require("bcrypt");
+const bcrypt = require("bcrypt");
 const app = express();
 const { User } = require("./models/user");
 const { validateSignUpData } = require("./utils/validation");
 const cookieParser = require("cookie-parser");
+const validator = require("validator");
 
 // Middleware to parse the incoming request data from JSON format to java script object.
 app.use(express.json());
