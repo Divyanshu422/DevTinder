@@ -7,6 +7,7 @@ const { validateSignUpData } = require("./utils/validation");
 const cookieParser = require("cookie-parser");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
+const { userAuth } = require("./middleware/auth")
 
 // Middleware to parse the incoming request data from JSON format to java script object.
 app.use(express.json());
@@ -82,15 +83,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", (req, res) => {
-  // Reading cookie
+// 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    console.log("Reading Cookie", req.cookies);
-    res.send("Profile Api called");
-  } catch (error) {
-    res.status(400).send("ERROR : " + error.message);
+    // `req.user` was already fetched and attached by `userAuth` middleware!
+    const user = req.user;
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
   }
-});
 
 const PORT = 3000;
 
