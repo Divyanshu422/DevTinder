@@ -6,7 +6,6 @@ const { User } = require("./models/user");
 const { validateSignUpData } = require("./utils/validation");
 const cookieParser = require("cookie-parser");
 const validator = require("validator");
-const jwt = require("jsonwebtoken");
 const { userAuth } = require("./middleware/auth")
 
 // Middleware to parse the incoming request data from JSON format to java script object.
