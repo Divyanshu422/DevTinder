@@ -72,6 +72,16 @@ const userSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+userSchema.method.getJWT = async function () {
+  const user = this;
+  const token = await jwt.sign({ _id: user._id }, HASH_KEY, {
+    expiresIn: "7d",
+  });
+}
+
+
+
+
 // Pascal case for class/model name - User
 const User = mongoose.model("User", userSchema);
 

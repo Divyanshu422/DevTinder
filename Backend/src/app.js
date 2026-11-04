@@ -69,14 +69,12 @@ app.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
-      const token = await jwt.sign({ _id: user._id }, HASH_KEY, {
-        expiresIn: "7d",
-      });
+      const token = await user.getJWT(); // Schema methods
       // Sending the token inside the cookie with expires time
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000), // Note: `expires` (Expires in 8 hours)
         // httpOnly: true // Security option so client-side JS cannot steal the cookie
-    });
+      });
       res.send("Login Successful!!!");
     } else {
       throw new Error("Invalid credentials");
@@ -96,14 +94,14 @@ app.get("/profile", userAuth, async (req, res) => {
     res.status(400).send("ERROR : " + err.message);
   }
 
-const PORT = 3000;
+  const PORT = 3000;
 
-connectDatabase()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+  connectDatabase()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    })
+    .catch((error) => {
+      console.log("Server Failed to runned", error);
     });
-  })
-  .catch((error) => {
-    console.log("Server Failed to runned", error);
-  });
