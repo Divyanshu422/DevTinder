@@ -1,6 +1,5 @@
 const express = require("express");
 const { connectDatabase } = require("./config/database");
-const bcrypt = require("bcrypt");
 const app = express();
 const { User } = require("./models/user");
 const { validateSignUpData } = require("./utils/validation");
@@ -65,7 +64,7 @@ app.post("/login", async (req, res) => {
     }
 
     // Step 2: Compare plain password from req.body with hashed password in DB
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.validatePassword(password);
 
     if (isPasswordValid) {
       const token = await user.getJWT(); // Schema methods
