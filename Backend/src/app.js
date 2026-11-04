@@ -72,8 +72,11 @@ app.post("/login", async (req, res) => {
       const token = await jwt.sign({ _id: user._id }, HASH_KEY, {
         expiresIn: "7d",
       });
-      // Sending the dummy cookie-token
-      res.cookie("token", token);
+      // Sending the token inside the cookie with expires time
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 8 * 3600000), // Note: `expires` (Expires in 8 hours)
+        // httpOnly: true // Security option so client-side JS cannot steal the cookie
+    });
       res.send("Login Successful!!!");
     } else {
       throw new Error("Invalid credentials");
