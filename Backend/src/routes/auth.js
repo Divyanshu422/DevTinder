@@ -38,4 +38,4 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post('/login');
 authRouter.post('/logout');
 
-module.exports = authRouter;
+module.exports = { authRouter };
