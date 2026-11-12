@@ -73,4 +73,17 @@ authRouter.post("/login", async (req, res) => {
     }
 });
 
+// =========================================================================
+// 2. POST /logout - Removing the token
+// Note: In production companies, developers often chain these two lines: 
+// res.cookie("token", null, { expires: new Date(Date.now()) }).send("Logout Successful!!");
+// =========================================================================
+
+authRouter.post("/logout", async (req, res) => {
+    res.cookie("token", null, {
+        expires: new Date(Date.now()), // Expires at the exact current millisecond!
+    });
+    res.send("Logout Successful!!");
+});
+
 module.exports = { authRouter };
