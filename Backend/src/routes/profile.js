@@ -1,11 +1,11 @@
 const express = require("express");
-const userAuth = require("../middleware/auth");
+const { userAuth } = require("../middleware/auth");
 
 const profileRouter = express.Router();
 
 
 // 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)
-profileRouter.get("/profile", userAuth, async (req, res) => {
+profileRouter.get("/", userAuth, async (req, res) => {
     try {
         // `req.user` was already fetched and attached by `userAuth` middleware!
         const user = req.user;
