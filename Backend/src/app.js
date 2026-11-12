@@ -14,26 +14,14 @@ app.use(cookieParser());
 
 const HASH_KEY = "DevTinder@";
 
+const PORT = 3000;
 
-
-// 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)
-app.get("/profile", userAuth, async (req, res) => {
-  try {
-    // `req.user` was already fetched and attached by `userAuth` middleware!
-    const user = req.user;
-    res.send(user);
-  } catch (err) {
-    res.status(400).send("ERROR : " + err.message);
-  }
-
-  const PORT = 3000;
-
-  connectDatabase()
-    .then(() => {
-      app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-      });
-    })
-    .catch((error) => {
-      console.log("Server Failed to runned", error);
+connectDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
+  })
+  .catch((error) => {
+    console.log("Server Failed to runned", error);
+  });
