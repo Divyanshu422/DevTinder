@@ -17,7 +17,7 @@ profileRouter.get("/", userAuth, async (req, res) => {
 // 4. POST /update - Updating the profile
 profileRouter.patch("/update", userAuth, async (req, res) => {
   try {
-    if (! (req.body)) {
+    if (!req.body) {
       throw new Error("Invalid Edit Data");
     }
     const loggedInUser = req.user;
