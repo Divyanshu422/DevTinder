@@ -22,9 +22,13 @@ profileRouter.patch("/update", userAuth, async (req, res) => {
     }
     // loggedInUser = attached by userAuth
     const loggedInUser = req.user;
+    // Updating the data - iterate over each key
     Object.keys(req.body).forEach((key) => {
       loggedInUser[key] = req.body[key];
     });
+    // Saving the data -
+    await loggedInUser.save();
+    res.send("Profile Updated Successfully");
   } catch (err) {
     console.log("ERROR: ", err);
     res.status(400).send("ERROR: " + err.message);
