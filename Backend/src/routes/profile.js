@@ -1,6 +1,6 @@
 const express = require("express");
 const { userAuth } = require("../middleware/auth");
-const { validateSignUpData } = require("../middleware/validation");
+const { validateEditProfileData } = require("../middleware/validation");
 const profileRouter = express.Router();
 
 // 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)
@@ -17,9 +17,10 @@ profileRouter.get("/", userAuth, async (req, res) => {
 // 4. POST /update - Updating the profile
 profileRouter.patch("/update", userAuth, async (req, res) => {
   try {
-    if (!req.body) {
+    if (!validateEditProfileData(req.body)) {
       throw new Error("Invalid Edit Data");
     }
+    // loggedInUser = attached by userAuth
     const loggedInUser = req.user;
     Object.keys(req.body).forEach((key) => {
       loggedInUser[key] = req.body[key];
