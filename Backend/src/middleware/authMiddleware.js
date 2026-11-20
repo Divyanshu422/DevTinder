@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const { User } = require("../models/user");
 
 const HASH_KEY = "DevTinder@";
+
 const userAuth = async (req, res, next) => {
   try {
     // 1. Read the token from the request cookies (parsed by cookie-parser)
@@ -10,6 +11,7 @@ const userAuth = async (req, res, next) => {
       throw new Error("Token is not valid!!!!");
     }
 
+    console.log("token is", token)
     // 2. Validate the token and decode the hidden payload ({ _id, iat, exp })
     const decodedObj = await jwt.verify(token, HASH_KEY);
     // extracting the id form the decoded token.

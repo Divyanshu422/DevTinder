@@ -1,6 +1,6 @@
 const express = require("express");
-const { userAuth } = require("../middleware/auth");
-const { validateEditProfileData } = require("../middleware/validation");
+const { userAuth } = require("../middleware/authMiddleware");
+const { validateEditProfileData } = require("../utils/validation");
 const profileRouter = express.Router();
 
 // 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)

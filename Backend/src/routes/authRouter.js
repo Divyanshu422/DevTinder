@@ -1,8 +1,10 @@
 const express = require('express');
 const bcrypt = require("bcrypt");
-const { User, validateSignUpData } = require("../models/user");
+const { User } = require("../models/user");
+const { validateSignUpData } = require("../utils/validation");
 // authRouter handles all authentication related API calls  
 const authRouter = express.Router();
+const validator = require("validator");
 
 
 // =========================================================================
@@ -56,6 +58,7 @@ authRouter.post("/login", async (req, res) => {
 
         // Step 2: Compare plain password from req.body with hashed password in DB
         const isPasswordValid = await user.validatePassword(password);
+
 
         if (isPasswordValid) {
             const token = await user.getJWT(); // Schema methods

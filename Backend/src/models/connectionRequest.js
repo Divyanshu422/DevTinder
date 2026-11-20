@@ -26,7 +26,7 @@ const connectionRequestSchema = new mongoose.Schema({
     timestamps: true, // This automatically adds createdAt and updatedAt
 });
 
-const ConnectionRequestModel = moongose.model("ConnectionRequest", connectionRequestSchema);
+const ConnectionRequestModel = mongoose.model("ConnectionRequest", connectionRequestSchema);
 
 module.exports = {
     ConnectionRequestModel
