@@ -8,8 +8,14 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
         // getting the formUserID: From userAuth
         const fromUserId = req.user._id;
         const toUserId = req.params.userId;
-        // getting the status form request body
+        // getting the status form request body 
         const { status } = req.body;
+
+        const allowedStatus = ["interested", "rejected"]
+        if (!allowedStatus.includes(status)) {
+            throw new Error("Invalid Status")
+        }
+
         // Saving the data in db 
         const conectionRequest = new ConnectionRequestModel({
             fromUserId: fromUserId,
