@@ -54,5 +54,42 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
     }
 })
 
+connectionRequestRouter.post("/review/:requestId", userAuth, async (req, res) => {
+    try {
+        const loggedInUserId = req.user._id;
+        const requestId = req.params.requestId;
+        const { status } = req.body;
+
+        // checking the status is valid or not [ Meaning there is a accepted or rejected ]
+        const allowedStatus = ["accepted", "rejected"];
+        if (!allowedStatus.includes(status)) {
+            throw new Error(`Invalid Status: ${status}`)
+        }
+
+        // 2. Find the pending ("interested") connection request meant for the logged-in user
+        const connectionRequest = await ConnectionRequestModel.findOne({
+            _id: requestId,
+            toUserId: loggedInUserId,
+            status: "interested",
+        });
+        if (!connectionRequest) {
+            return res.status(404).json({ message: "Connection request not found" });
+        }
+
+        // changing the status of db with the status received in body
+        connectionRequest.status = status;
+        await ConnectionRequest.save();
+
+        res.status(200).json({
+            message: `Connection request ${status} successfully`,
+            data,
+        });
+
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+})
 
 module.exports = { connectionRequestRouter };
