@@ -35,7 +35,8 @@ connectionRequestSchema.pre("save", function (next) {
     next();
 })
 
-
+// Compound Index on fromUserId + toUserId  
+connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 })
 
 const ConnectionRequestModel = mongoose.model("ConnectionRequest", connectionRequestSchema);
 
