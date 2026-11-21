@@ -26,6 +26,17 @@ const connectionRequestSchema = new mongoose.Schema({
     timestamps: true, // This automatically adds createdAt and updatedAt
 });
 
+// Schema Pre-Save Hook: Runs automatically right before `.save()`
+connectionRequestSchema.pre("save", function (next) {
+    const connectionRequest = this;
+    if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
+        throw new Error("Same user connection is not allowed!");
+    }
+    next();
+})
+
+
+
 const ConnectionRequestModel = mongoose.model("ConnectionRequest", connectionRequestSchema);
 
 module.exports = {
