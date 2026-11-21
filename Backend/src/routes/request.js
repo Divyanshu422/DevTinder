@@ -78,15 +78,17 @@ connectionRequestRouter.post("/review/:requestId", userAuth, async (req, res) =>
 
         // changing the status of db with the status received in body
         connectionRequest.status = status;
-        await ConnectionRequest.save();
 
+        const data = await connectionRequest.save();
+
+        console.log("Passed :", data)
         res.status(200).json({
             message: `Connection request ${status} successfully`,
             data,
         });
 
     } catch (err) {
-        res.status(400).json({ 
+        res.status(400).json({
             message: err.message
         })
     }

@@ -27,12 +27,11 @@ const connectionRequestSchema = new mongoose.Schema({
 });
 
 // Schema Pre-Save Hook: Runs automatically right before `.save()`
-connectionRequestSchema.pre("save", function (next) {
+connectionRequestSchema.pre("save", function () {
     const connectionRequest = this;
     if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
         throw new Error("Same user connection is not allowed!");
     }
-    next();
 })
 
 // Compound Index on fromUserId + toUserId  
