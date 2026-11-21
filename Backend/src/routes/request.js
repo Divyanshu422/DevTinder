@@ -2,6 +2,7 @@ const express = require("express");
 const { userAuth } = require("../middleware/authMiddleware");
 const { ConnectionRequestModel } = require("../models/connectionRequest");
 const connectionRequestRouter = express.Router();
+const { User } = require("../models/user")
 
 connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
     try {
@@ -10,6 +11,7 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
         const toUserId = req.params.userId;
         // getting the status form request body 
         const { status } = req.body;
+
         // validating the payload status key - can either be interested and ignored
         const allowedStatus = ["interested", "ignored"]
         if (!allowedStatus.includes(status)) {
@@ -20,6 +22,14 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
             }))
         }
 
+        // checking whether the toUserId is valid or not [ Meaning there is a person in db]
+        const validToUserId = await User.findById(toUserId);
+        if (!validToUserId) {
+            throw new Error(JSON.stringify({
+                message: "Invalid User"
+            }))
+        }
+
         // Checking whether the connection already exist
         const existingConnectionRequest = await ConnectionRequestModel.findOne({
             $or: [
@@ -27,6 +37,9 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
                 { fromUserId: toUserId, toUserId: fromUserId },   // Check if B -> A exists
             ],
         });
+        if (existingConnectionRequest) {
+            res.status(400).json({ message: "Connection request already exist" })
+        }
 
         // Saving the data in db 
         const conectionRequest = new ConnectionRequestModel({

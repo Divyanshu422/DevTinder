@@ -19,7 +19,6 @@ authRouter.post("/signup", async (req, res) => {
 
         // Step 2: Encrypt (Hash) the password with 10 salt rounds
         const passwordHash = await bcrypt.hash(password, 10);
-        console.log(passwordHash);
 
         // Step 3: Creating a new instance of the User model with explicit fields only
         // Any extra fields sent in `req.body` (e.g., `xyz`) are completely ignored!
