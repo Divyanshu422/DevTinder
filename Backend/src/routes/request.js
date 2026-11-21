@@ -10,10 +10,14 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
         const toUserId = req.params.userId;
         // getting the status form request body 
         const { status } = req.body;
-
-        const allowedStatus = ["interested", "rejected"]
+        // validating the payload status key - can either be interested and ignored
+        const allowedStatus = ["interested", "ignored"]
         if (!allowedStatus.includes(status)) {
-            throw new Error("Invalid Status")
+            // throw new Error(`Invalid Status send: ${status}`)
+            throw new Error(JSON.stringify({
+                message: "Invalid Status",
+                status: status
+            }))
         }
 
         // Saving the data in db 
@@ -28,8 +32,14 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
         });
 
     } catch (err) {
+        // Earlier code: when we were directly throwing the error in line 16
+        // res.status(400).json({
+        //     message: err.message
+        // })
+        const errorData = JSON.parse(err.message);
         res.status(400).json({
-            message: err.message
+            message: errorData.message,
+            status: errorData.status
         })
     }
 })
