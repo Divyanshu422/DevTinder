@@ -20,6 +20,14 @@ connectionRequestRouter.post("/request/:userId", userAuth, async (req, res) => {
             }))
         }
 
+        // Checking whether the connection already exist
+        const existingConnectionRequest = await ConnectionRequestModel.findOne({
+            $or: [
+                { fromUserId, toUserId },                         // Check if A -> B exists
+                { fromUserId: toUserId, toUserId: fromUserId },   // Check if B -> A exists
+            ],
+        });
+
         // Saving the data in db 
         const conectionRequest = new ConnectionRequestModel({
             fromUserId: fromUserId,
