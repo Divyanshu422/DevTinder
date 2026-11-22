@@ -5,7 +5,7 @@ const userRouter = express.Router();
 
 //getting all the connection which user got
 
-userRouter.get("/me/requests", userAuth, async (req, res) => {
+userRouter.get("/me/requests/received", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
         const data = await ConnectionRequestModel.find({
@@ -32,7 +32,7 @@ userRouter.get("/me/requests", userAuth, async (req, res) => {
             message: `${err.message}`
         })
     }
-
 })
+
 
 module.exports = { userRouter };    
