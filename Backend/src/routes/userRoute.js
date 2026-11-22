@@ -40,10 +40,10 @@ userRouter.get("/me/connection", userAuth, async (req, res) => {
         const data = await ConnectionRequestModel.find({
             $or: [{
                 toUserId: loggedInUser._id,
-                status: accepted
+                status: "accepted"
             }, {
                 fromUserId: loggedInUser._id,
-                status: accepted
+                status: "accepted"
             }]
         })
             .populate("fromUserId", ["firstName", "lastName", "emailId", "gender", "age"])
@@ -55,10 +55,19 @@ userRouter.get("/me/connection", userAuth, async (req, res) => {
                 message: "No Connection Found"
             })
         }
+
+        // Return ONLY the other user's profile (not the logged-in user's own profile)
+        const filterData = data.map((row) => {
+            if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
+                return row.toUserId;
+            }
+            return row.fromUserId;
+        });
+
         res.status(200).json({
             success: true,
             message: "Connection Found",
-            data: data
+            data: filterData
         })
     }
 

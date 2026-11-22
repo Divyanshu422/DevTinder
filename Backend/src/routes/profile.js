@@ -3,21 +3,10 @@ const { userAuth } = require("../middleware/authMiddleware");
 const { validateEditProfileData } = require("../utils/validation");
 const profileRouter = express.Router();
 
-// 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)
-profileRouter.get("/", userAuth, async (req, res) => {
-  try {
-    // `req.user` was already fetched and attached by `userAuth` middleware!
-    const user = req.user;
-    res.send(user);
-  } catch (err) {
-    res.status(400).send("ERROR : " + err.message);
-  }
-});
-
 // 4. POST /update - Updating the profile
 profileRouter.patch("/update", userAuth, async (req, res) => {
   try {
-    if (!validateEditProfileData(req.body)) {
+    if (!validateEditProfileData(req)) {
       throw new Error("Invalid Edit Data");
     }
     // loggedInUser = attached by userAuth
@@ -37,5 +26,17 @@ profileRouter.patch("/update", userAuth, async (req, res) => {
     res.status(400).send("ERROR: " + err.message);
   }
 });
+
+// 3. PROTECTED API: Get Logged-In User's Profile (Secured by `userAuth` middleware)
+profileRouter.get("/", userAuth, async (req, res) => {
+  try {
+    // `req.user` was already fetched and attached by `userAuth` middleware!
+    const user = req.user;
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
+});
+
 
 module.exports = { profileRouter };
