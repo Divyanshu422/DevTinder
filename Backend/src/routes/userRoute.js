@@ -8,7 +8,7 @@ const userRouter = express.Router();
 userRouter.get("/", userAuth, async (req, res) => {
     const loggedInUser = req.user;
     const data = await ConnectionRequestModel.find({
-        fromUserId: loggedInUser._id,
+        toUserID: loggedInUser._id,
         status: "interest"
     }).populate("fromUserId", ["firstName", "lastName", "emailId", "gender", "age"])
 
