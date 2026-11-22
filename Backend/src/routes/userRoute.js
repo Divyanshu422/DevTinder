@@ -10,17 +10,17 @@ userRouter.get("/", userAuth, async (req, res) => {
         const loggedInUser = req.user;
         console.log(loggedInUser)
         const data = await ConnectionRequestModel.find({
-            toUserID: loggedInUser._id,
+            toUserId: loggedInUser._id,
             status: "interested"
         }).populate("fromUserId", ["firstName", "lastName", "emailId", "gender", "age"])
-        console.log(data);
 
-        if (!data) {
+        if (!data ||  data.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: "No Connection Found"
             })
         }
+        
         res.status(200).json({
             success: true,
             message: "Connection Found",
