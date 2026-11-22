@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const { authRouter } = require("./routes/authRouter");
 const { profileRouter } = require("./routes/profile");
 const { connectionRequestRouter } = require("./routes/request");
+const { userRouter } = require("./routes/userRoute")
 
 const app = express();
 // Middleware to parse the incoming request data from JSON format to java script object.
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/connection", connectionRequestRouter);
+app.use("/api/v1/users", userRouter)
 
 const PORT = 3000;
 
