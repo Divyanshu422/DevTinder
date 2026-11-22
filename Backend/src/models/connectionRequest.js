@@ -9,8 +9,8 @@ const connectionRequestSchema = new mongoose.Schema({
     toUserId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: "User"
     },
-
     gender: {
         type: String,
         enum: ["male", "female", "others"], // Only these 3 strings are allowed
