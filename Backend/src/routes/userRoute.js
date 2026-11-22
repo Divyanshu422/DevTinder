@@ -6,20 +6,30 @@ const userRouter = express.Router();
 //getting all the connection which user got
 
 userRouter.get("/", userAuth, async (req, res) => {
-    const loggedInUser = req.user;
-    const data = await ConnectionRequestModel.find({
-        toUserID: loggedInUser._id,
-        status: "interest"
-    }).populate("fromUserId", ["firstName", "lastName", "emailId", "gender", "age"])
-
-    if (!data) {
-        return res.status(400).json({
-            success: false,
-            message: "No Connection Found"
+    try {
+        const loggedInUser = req.user;
+        const data = await ConnectionRequestModel.find({
+            toUserID: loggedInUser._id,
+            status: "interest"
+        }).populate("fromUserId", ["firstName", "lastName", "emailId", "gender", "age"])
+        if (!data) {
+            return res.status(400).json({
+                success: false,
+                message: "No Connection Found"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: "Connection Found",
+            data: data
         })
     }
-
-
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            message: `${err.message}`
+        })
+    }
 
 })
 
