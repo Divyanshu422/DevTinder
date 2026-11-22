@@ -8,10 +8,13 @@ const userRouter = express.Router();
 userRouter.get("/", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
+        console.log(loggedInUser)
         const data = await ConnectionRequestModel.find({
             toUserID: loggedInUser._id,
-            status: "interest"
+            status: "interested"
         }).populate("fromUserId", ["firstName", "lastName", "emailId", "gender", "age"])
+        console.log(data);
+
         if (!data) {
             return res.status(400).json({
                 success: false,
